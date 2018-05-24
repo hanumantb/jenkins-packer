@@ -26,14 +26,16 @@ pipeline {
     stages {
         stage('Build OS') {
             steps {
-                parallel {
-                    OS.each { OSVersion ->
+                def tasks = [:]
+                OS.each { OSVersion ->
+                    tasks[OSVersion] = {
                         build job: 'packer-BaseOS', parameters: [
                             string(name: 'OSVersion', value: OSVersion)
                         ],
                         wait: true
                     }
                 }
+                parallel tasks
             }
         }
         stage('Update OS') {
