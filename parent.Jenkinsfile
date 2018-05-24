@@ -40,7 +40,7 @@ pipeline {
     stages {
         stage('Build OS') {
             steps {
-                echo buildTasks
+                echo OS
             }
             // parallel {buildTasks}
         }
