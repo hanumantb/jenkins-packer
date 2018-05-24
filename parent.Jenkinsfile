@@ -26,7 +26,7 @@ pipeline {
         stage('Build OS') {
             steps {
                 build job: 'packer-BaseOS', parameters: [
-                    choice(name: 'OSVersion', value: $OSVersion)
+                    choice(name: 'OSVersion', value: OSVersion)
                 ],
                 wait: false
             }
