@@ -45,7 +45,7 @@ pipeline {
                     Write-Host $env:buildTasks
                 '''
             }
-            parallel {buildTasks}
+            // parallel {buildTasks}
         }
         stage('Update OS') {
             steps {
