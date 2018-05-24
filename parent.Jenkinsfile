@@ -41,7 +41,7 @@ pipeline {
         stage('Build OS') {
             steps {
                 powershell '''
-                    Write-Host "Made it to powershell.  Value of OS: $($env:OS[0])"
+                    Write-Host "Made it to powershell.  Value of BT: $($env:buildTasks)"
                 '''
             }
             // parallel {buildTasks}
