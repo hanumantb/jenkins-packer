@@ -39,8 +39,10 @@ pipeline {
     // }
     stages {
         stage('Build OS') {
-            echo "Value of buildTasks:"
-            echo buildTasks
+            steps {
+                echo "Value of buildTasks:"
+                echo buildTasks
+            }
             parallel {buildTasks}
         }
         stage('Update OS') {
