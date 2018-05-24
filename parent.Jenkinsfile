@@ -25,11 +25,6 @@ pipeline {
     // }
     stages {
         stage('Build OS') {
-            steps {
-                powershell '''
-                    Write-Host "Made it to powershell.  Value of BT: $($env:buildTasks)"
-                '''
-            }
             // Run OS builds in parallel
             //TODO: It would be nice to dynamically do this, but it seems difficult using a declaritive pipeline
             parallel {
