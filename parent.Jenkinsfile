@@ -41,10 +41,10 @@ pipeline {
         stage('Build OS') {
             steps {
                 powershell '''
-                    Write-Host "Made it to powershell.  Value of buildTasks: $env:buildTasks"
+                    Write-Host "Made it to powershell.  Value of OS: $env:OS[0]"
                 '''
             }
-            // parallel {buildTasks}
+            parallel {buildTasks}
         }
         stage('Update OS') {
             steps {
