@@ -39,7 +39,7 @@ pipeline {
     // }
     stages {
         stage('Build OS') {
-            parallel buildTasks
+            parallel {buildTasks}
         }
         stage('Update OS') {
             steps {
