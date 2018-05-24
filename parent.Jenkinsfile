@@ -1,20 +1,6 @@
 def buildDesc = "Packer - Deploy \\ Parent"
 def OS = ["2008R2", "2012R2", "2016"]
 
-def buildTasks = [:]
-for (int i = 0; i < OS.size(); i++) {
-    buildTasks[i] = {
-        stage("Build OS ${OS[i]}") {
-            steps {
-                build job:'packer-BaseOS', parameters: [
-                    string(name: 'OSVersion', value: OS[i])
-                ],
-                wait: true
-            }
-        }
-    }
-}
-
 pipeline {
     agent { label 'packer' }
     environment {
@@ -39,44 +25,34 @@ pipeline {
     // }
     stages {
         stage('Build OS') {
-            steps {
-                powershell '''
-                    Write-Host "Made it to powershell.  Value of BT: $($env:buildTasks)"
-                '''
-            }
-<<<<<<< HEAD
             // Run OS builds in parallel
             //TODO: It would be nice to dynamically do this, but it seems difficult using a declaritive pipeline
             parallel {
-                buildTasks
-                // stage("Build OS 2008R2") {
-                //     steps {
-                //         build job:'packer-BaseOS', parameters: [
-                //             string(name: 'OSVersion', value: '2008R2')
-                //         ],
-                //         wait: true
-                //     }
-                // }
-                // stage("Build OS 2012R2") {
-                //     steps {
-                //         build job:'packer-BaseOS', parameters: [
-                //             string(name: 'OSVersion', value: '2012R2')
-                //         ],
-                //         wait: true
-                //     }
-                // }
-                // stage("Build OS 2016") {
-                //     steps {
-                //         build job:'packer-BaseOS', parameters: [
-                //             string(name: 'OSVersion', value: '2016')
-                //         ],
-                //         wait: true
-                //     }
-                // }
+                stage("Build OS 2008R2") {
+                    steps {
+                        build job:'packer-BaseOS', parameters: [
+                            string(name: 'OSVersion', value: '2008R2')
+                        ],
+                        wait: true
+                    }
+                }
+                stage("Build OS 2012R2") {
+                    steps {
+                        build job:'packer-BaseOS', parameters: [
+                            string(name: 'OSVersion', value: '2012R2')
+                        ],
+                        wait: true
+                    }
+                }
+                stage("Build OS 2016") {
+                    steps {
+                        build job:'packer-BaseOS', parameters: [
+                            string(name: 'OSVersion', value: '2016')
+                        ],
+                        wait: true
+                    }
+                }
             }
-=======
-            parallel {buildTasks}
->>>>>>> parent of d790442... doesn't look like you can dynamically parallelize.  Skipping for now and reverting back
         }
         stage('Update OS') {
             steps {
