@@ -36,7 +36,7 @@ pipeline {
     stages {
         stage('Build OS') {
             parallel {
-                stage('build OS 1') {
+                stage("build OS ${OS[0]}") {
                     steps {
                         build job:'packer-BaseOS', parameters: [
                             string(name: 'OSVersion', value: OS[0])
@@ -44,7 +44,7 @@ pipeline {
                         wait: true
                     }
                 }
-                stage('build OS 2') {
+                stage("build OS ${OS[1]}") {
                     steps {
                         build job:'packer-BaseOS', parameters: [
                             string(name: 'OSVersion', value: OS[1])
@@ -52,7 +52,7 @@ pipeline {
                         wait: true
                     }
                 }
-                stage('build OS 3') {
+                stage("build OS ${OS[2]}") {
                     steps {
                         build job:'packer-BaseOS', parameters: [
                             string(name: 'OSVersion', value: OS[2])
