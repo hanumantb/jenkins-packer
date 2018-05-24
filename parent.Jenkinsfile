@@ -25,8 +25,8 @@ pipeline {
     // }
     stages {
         stage('Build OS') {
-            parallel {
-                steps {
+            steps {
+                parallel {
                     OS.each { OSVersion ->
                         build job: 'packer-BaseOS', parameters: [
                             string(name: 'OSVersion', value: OSVersion)
@@ -35,7 +35,6 @@ pipeline {
                     }
                 }
             }
-
         }
         stage('Update OS') {
             steps {
