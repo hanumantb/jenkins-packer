@@ -4,7 +4,7 @@ def OS = ["2008R2", "2012R2", "2016"]
 def buildTasks = [:]
 OS.each { OSVersion ->
     buildTasks[OSVersion] = {
-        stage("Build OS $OSVersion") {
+        stage("Build OS ${OSVersion}") {
             steps {
                 build job:'packer-BaseOS', parameters: [
                     string(name: 'OSVersion', value: OSVersion)
