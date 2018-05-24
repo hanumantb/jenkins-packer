@@ -31,6 +31,15 @@ pipeline {
                 wait: true
             }
         }
+        stage('Update OS') {
+            steps {
+                build job: 'packer-Updates', parameters: [
+                    string(name: 'OSVersion', value: OSVersion)
+                ],
+                wait: true
+            }
+
+        }
     }
     post {
         success {
