@@ -2,12 +2,12 @@ def buildDesc = "Packer - Deploy \\ Parent"
 def OS = ["2008R2", "2012R2", "2016"]
 
 def buildTasks = [:]
-OS.each {
-    buildTasks[${it}] = {
-        stage("Build OS ${it}") {
+OS.each { OSVersion ->
+    buildTasks[OSVersion] = {
+        stage("Build OS OSVersion") {
             steps {
                 build job:'packer-BaseOS', parameters: [
-                    string(name: 'OSVersion', value: ${it})
+                    string(name: 'OSVersion', value: OSVersion)
                 ],
                 wait: true
             }
