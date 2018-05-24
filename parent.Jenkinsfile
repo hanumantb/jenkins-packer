@@ -2,12 +2,12 @@ def buildDesc = "Packer - Deploy \\ Parent"
 def OS = ["2008R2", "2012R2", "2016"]
 
 def buildTasks = [:]
-OS.each { OSVersion ->
-    buildTasks[OSVersion] = {
-        stage("Build OS OSVersion") {
+for (int i = 0; i < OS.length; i++) {
+    buildTasks[i] = {
+        stage("Build OS ${OS[i]}") {
             steps {
                 build job:'packer-BaseOS', parameters: [
-                    string(name: 'OSVersion', value: OSVersion)
+                    string(name: 'OSVersion', value: OS[i])
                 ],
                 wait: true
             }
@@ -41,10 +41,10 @@ pipeline {
         stage('Build OS') {
             steps {
                 powershell '''
-                    Write-Host "Made it to powershell.  Value of OS: $env:OS[0]"
+                    Write-Host "Made it to powershell.  Value of OS: $($env:OS[0])"
                 '''
             }
-            parallel {buildTasks}
+            // parallel {buildTasks}
         }
         stage('Update OS') {
             steps {
