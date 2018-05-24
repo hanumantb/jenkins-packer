@@ -28,7 +28,7 @@ pipeline {
                 build job: 'packer-BaseOS', parameters: [
                     string(name: 'OSVersion', value: OSVersion)
                 ],
-                wait: false
+                wait: true
             }
         }
     }
