@@ -25,9 +25,10 @@ pipeline {
     stages {
         stage('Build OS') {
             steps {
-                powershell '''
-                    .\\Build-Deploy.ps1 -OSVersion $env:OSVersion -OutputDirectory $env:packer_build_directory -NumTemplates 1 -DestinationVCenter $env:DestinationVCenter
-                '''
+                build job: 'packer-BaseOS', parameters: [
+                    choice(name: 'OSVersion', value: $OSVersion)
+                ],
+                wait: false
             }
         }
     }
