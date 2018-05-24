@@ -35,8 +35,25 @@ pipeline {
     // }
     stages {
         stage('Build OS') {
-            steps {
-                parallel tasks
+            parallel {
+                steps {
+                    build job:'packer-BaseOS', parameters: [
+                        string(name: 'OSVersion', value: OS[0])
+                    ],
+                    wait: true
+                }
+                steps {
+                    build job:'packer-BaseOS', parameters: [
+                        string(name: 'OSVersion', value: OS[1])
+                    ],
+                    wait: true
+                }
+                steps {
+                    build job:'packer-BaseOS', parameters: [
+                        string(name: 'OSVersion', value: OS[2])
+                    ],
+                    wait: true
+                }
             }
         }
         stage('Update OS') {
