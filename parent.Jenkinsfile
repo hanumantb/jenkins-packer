@@ -1,6 +1,16 @@
 def buildDesc = "Packer - Deploy \\ {$OSVersion}"
 def OS = ["2008R2", "2012R2", "2016"]
 
+def tasks = [:]
+OS.each { OSVersion ->
+    tasks[OSVersion] = {
+        build job: 'packer-BaseOS', parameters: [
+            string(name: 'OSVersion', value: OSVersion)
+        ],
+        wait: true
+    }
+}
+
 pipeline {
     agent { label 'packer' }
     environment {
@@ -26,15 +36,6 @@ pipeline {
     stages {
         stage('Build OS') {
             steps {
-                def tasks = [:]
-                OS.each { OSVersion ->
-                    tasks[OSVersion] = {
-                        build job: 'packer-BaseOS', parameters: [
-                            string(name: 'OSVersion', value: OSVersion)
-                        ],
-                        wait: true
-                    }
-                }
                 parallel tasks
             }
         }
