@@ -47,7 +47,7 @@ pipeline {
         stage('Update OS') {
             steps {
                 build job: 'packer-Updates', parameters: [
-                    string(name: 'OSVersion', value: OSVersion)
+                    string(name: 'OSVersion', value: OS[1])
                 ],
                 wait: true
             }
