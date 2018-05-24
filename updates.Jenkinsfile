@@ -21,7 +21,7 @@ pipeline {
         stage('BaseOS') {
             steps {
                 powershell '''
-                    .\\Build-Updates.ps1 -OSVersion $env:OSVersion -OutputDirectory $env:packer_build_directory
+                    .\\update\\Build-Updates.ps1 -OSVersion $env:OSVersion -OutputDirectory $env:packer_build_directory
                 '''
             }
         }

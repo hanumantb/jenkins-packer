@@ -26,7 +26,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 powershell '''
-                    .\\Build-Deploy.ps1 -OSVersion $env:OSVersion -OutputDirectory $env:packer_build_directory -NumTemplates 1 -DestinationVCenter $env:DestinationVCenter
+                    .\\deploy\\Build-Deploy.ps1 -OSVersion $env:OSVersion -OutputDirectory $env:packer_build_directory -NumTemplates 1 -DestinationVCenter $env:DestinationVCenter
                 '''
             }
         }
