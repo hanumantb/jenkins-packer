@@ -44,6 +44,7 @@ pipeline {
                     Write-Host "Made it to powershell.  Value of BT: $($env:buildTasks)"
                 '''
             }
+<<<<<<< HEAD
             // Run OS builds in parallel
             //TODO: It would be nice to dynamically do this, but it seems difficult using a declaritive pipeline
             parallel {
@@ -73,6 +74,9 @@ pipeline {
                 //     }
                 // }
             }
+=======
+            parallel {buildTasks}
+>>>>>>> parent of d790442... doesn't look like you can dynamically parallelize.  Skipping for now and reverting back
         }
         stage('Update OS') {
             steps {
