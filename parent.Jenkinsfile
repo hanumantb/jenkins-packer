@@ -44,7 +44,7 @@ pipeline {
                     Write-Host "Made it to powershell.  Value of BT: $($env:buildTasks)"
                 '''
             }
-            // parallel {buildTasks}
+            parallel {buildTasks}
         }
         stage('Update OS') {
             steps {
