@@ -1,4 +1,4 @@
-def buildDesc = "Packer - Deploy \\ {$OSVersion}"
+def buildDesc = "Packer - Deploy \\ Parent"
 def OS = ["2008R2", "2012R2", "2016"]
 
 def buildTasks = [:]
