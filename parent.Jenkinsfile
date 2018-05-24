@@ -40,8 +40,10 @@ pipeline {
     stages {
         stage('Build OS') {
             steps {
-                echo "Value of buildTasks:"
-                echo buildTasks
+                powershell '''
+                    Write-Host "Trying to see value of buildTasks"
+                    Write-Host $env:buildTasks
+                '''
             }
             parallel {buildTasks}
         }
