@@ -1,4 +1,5 @@
 def buildDesc = "Packer - Deploy \\ {$OSVersion}"
+def OS = ["2008R2", "2012R2", "2016"]
 
 pipeline {
     agent { label 'packer' }
@@ -9,27 +10,32 @@ pipeline {
         // Sets permanent cache location for downloaded isos
         PACKER_CACHE_DIR = "D:/PackerCache/"
     }
-    parameters {
-        choice(
-            // OS Version to build.
-            name: 'OSVersion',
-            choices:"2008R2\n2012R2\n2016\nALL",
-            description: "Operating System Version"
-        )
-        choice(
-            name: 'DestinationVCenter',
-            choices: "DEN3\nDEN2\nSEA1\nSEA2\nDEN4",
-            description: "Destination vCenter"
-        )
-    }
+    // parameters {
+    //     choice(
+    //         // OS Version to build.
+    //         name: 'OSVersion',
+    //         choices:"2008R2\n2012R2\n2016\nALL",
+    //         description: "Operating System Version"
+    //     )
+    //     choice(
+    //         name: 'DestinationVCenter',
+    //         choices: "DEN3\nDEN2\nSEA1\nSEA2\nDEN4",
+    //         description: "Destination vCenter"
+    //     )
+    // }
     stages {
         stage('Build OS') {
-            steps {
-                build job: 'packer-BaseOS', parameters: [
-                    string(name: 'OSVersion', value: OSVersion)
-                ],
-                wait: true
+            parallel {
+                steps {
+                    OS.each { OSVersion ->
+                        build job: 'packer-BaseOS', parameters: [
+                            string(name: 'OSVersion', value: OSVersion)
+                        ],
+                        wait: true
+                    }
+                }
             }
+
         }
         stage('Update OS') {
             steps {
