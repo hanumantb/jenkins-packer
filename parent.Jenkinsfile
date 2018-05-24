@@ -2,7 +2,7 @@ def buildDesc = "Packer - Deploy \\ Parent"
 def OS = ["2008R2", "2012R2", "2016"]
 
 def buildTasks = [:]
-for (int i = 0; i < OS.count; i++) {
+for (int i = 0; i < OS.size(); i++) {
     buildTasks[i] = {
         stage("Build OS ${OS[i]}") {
             steps {
