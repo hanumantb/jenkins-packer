@@ -23,7 +23,7 @@ pipeline {
         )
     }
     stages {
-        stage('Deploy') {
+        stage('Build OS') {
             steps {
                 powershell '''
                     .\\Build-Deploy.ps1 -OSVersion $env:OSVersion -OutputDirectory $env:packer_build_directory -NumTemplates 1 -DestinationVCenter $env:DestinationVCenter
@@ -36,7 +36,7 @@ pipeline {
             powershell '''
                 Write-Host "Jenkins was successful!"
             '''
-            cleanWs()
+            // cleanWs()
         }
     }
 }

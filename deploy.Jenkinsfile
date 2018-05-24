@@ -36,7 +36,7 @@ pipeline {
             powershell '''
                 Write-Host "Jenkins was successful!"
             '''
-            cleanWs()
+            // cleanWs()
         }
     }
 }
