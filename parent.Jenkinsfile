@@ -1,5 +1,6 @@
 def buildDesc = "Packer - Deploy \\ Parent"
 def OS = ["2008R2", "2012R2", "2016"]
+def OS2008R2;
 
 pipeline {
     agent { label 'packer' }
@@ -30,7 +31,7 @@ pipeline {
             parallel {
                 stage("Build OS 2008R2") {
                     steps {
-                        def OS2008R2 = build job:'packer-BaseOS', propogate: false, parameters: [
+                        OS2008R2 = build job:'packer-BaseOS', propogate: false, parameters: [
                             string(name: 'OSVersion', value: '2008R2')
                         ],
                         wait: true
