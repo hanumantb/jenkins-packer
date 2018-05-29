@@ -30,7 +30,7 @@ pipeline {
             parallel {
                 stage("Build OS 2008R2") {
                     steps {
-                        build job:'packer-BaseOS', parameters: [
+                        def OS2008R2 = build job:'packer-BaseOS', propogate: false, parameters: [
                             string(name: 'OSVersion', value: '2008R2')
                         ],
                         wait: true
@@ -55,13 +55,17 @@ pipeline {
             }
         }
         stage('Update OS') {
+            when {
+                expression {
+                    return OS2008R2.result() == 'SUCCESS'
+                }
+            }
             steps {
                 build job: 'packer-Updates', parameters: [
                     string(name: 'OSVersion', value: OS[1])
                 ],
                 wait: true
             }
-
         }
     }
     post {
