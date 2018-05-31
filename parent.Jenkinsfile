@@ -68,7 +68,7 @@ pipeline {
                     when {
                         expression {
                             lastRun = readJSON file: "${packer_build_directory}/2008R2-BuildOS-LastRun.json"
-                            "${lastRun.Status}" == 'SUCCESS'}
+                            "${lastRun.Status}" == 'SUCCEEDED'}
                     }
                     steps {
                         build job: 'packer-Updates', parameters: [
