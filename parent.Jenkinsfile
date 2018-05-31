@@ -2,6 +2,7 @@ def buildDesc = "Packer - Deploy \\ Parent"
 def OS = ["2008R2", "2012R2", "2016"]
 def lastRun;
 def Destinations = ["DEN3", "DEN4", "DEN2", "SEA1", "SEA2"]
+def builds;  //TODO: Is it necessary to put these up here?
 
 pipeline {
     agent { label 'packer' }
@@ -112,6 +113,16 @@ pipeline {
         stage('Deploy OS') {
             parallel {
                 stage("Deploy 2008R2") {
+                    builds = [:]
+                    for(Dest in Destinations) {
+                        curJob = {
+                                build job: 'packer-Deploy', parameters: [
+                                string(name: 'OSVersion', value: '2008R2'),
+                                string(name: 'DestinationVCenter', value: Dest)
+                            ],
+                            wait: true
+                        }
+                    builds.add(curJob)
                     when {
                         expression {
                             lastRun = readJSON file: "${packer_build_directory}/2008R2-Updates-LastRun.json"
@@ -119,13 +130,7 @@ pipeline {
                         }
                     }
                     steps {
-                        for(Dest in Destinations) {
-                            build job: 'packer-Deploy', parameters: [
-                                string(name: 'OSVersion', value: '2008R2'),
-                                string(name: 'DestinationVCenter', value: Dest)
-                            ],
-                            wait: true
-                        }
+                        curJob
                     }
                 }
                 stage("Deploy SEA1") {
