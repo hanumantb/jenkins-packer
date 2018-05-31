@@ -1,11 +1,11 @@
 # .source Helper-Functions
-. ../Helper-Functions.ps1
+. "../Helper-Functions.ps1"
 
 Write-Host $PSScriptRoot
 
 param(
     $OSVersion,
-    $OutputDirectory
+    $OutputDirectory = "D:\PackerBuilds\"
 )
 
 # Set up Packer json file name based on OSVersion
