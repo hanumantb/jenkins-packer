@@ -1,5 +1,6 @@
 def buildDesc = "Packer - Deploy \\ Parent"
 def OS = ["2008R2", "2012R2", "2016"]
+def lastRun;
 
 pipeline {
     agent { label 'packer' }
@@ -29,7 +30,6 @@ pipeline {
                 script {
                     currentBuild.description = "${buildDesc}"
                 }
-
             }
         }
         stage('Build OS') {
@@ -65,7 +65,9 @@ pipeline {
         stage('Update OS') {
             parallel {
                 stage("Update 2008R2") {
-                    def lastRun = readJSON file: "${packer_build_directory}/2008R2-BuildOS-LastBuild.json"
+                    steps {
+                        lastRun = readJSON file: "${packer_build_directory}/2008R2-BuildOS-LastBuild.json"
+                    }
                     when {
                         expression {"${lastRun.Status}" == 'SUCCESS'}
                     }
