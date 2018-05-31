@@ -1,3 +1,5 @@
+# .source Helper-Functions
+. ../Helper-Functions
 
 param(
     $OSVersion,
@@ -22,3 +24,6 @@ Write-Host "Sleeping for $random seconds"
 Start-Sleep -Seconds $random
 
 Write-Host "Deploy was successfull for $OSVersion to $DestinationVCenter with Templates to keep: $NumTemplates and versioning being $RunVersioning."
+
+# Set last status
+Set-LastBuild -OSVersion $OSVersion -Status SUCCEEDED -BuildDirectory $OutputDirectory -Task Deploy

@@ -1,3 +1,5 @@
+# .source Helper-Functions
+. ../Helper-Functions
 
 param(
     $OSVersion,
@@ -19,3 +21,6 @@ Write-Host "Sleeping for $random seconds"
 Start-Sleep -Seconds $random
 
 Write-Host "Updates were successfull for $OSVersion to $OutputDirectory"
+
+# Set last status
+Set-LastBuild -OSVersion $OSVersion -Status SUCCEEDED -BuildDirectory $OutputDirectory -Task Updates

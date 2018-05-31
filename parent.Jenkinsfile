@@ -1,6 +1,5 @@
 def buildDesc = "Packer - Deploy \\ Parent"
 def OS = ["2008R2", "2012R2", "2016"]
-def OS2008R2;
 
 pipeline {
     agent { label 'packer' }
@@ -31,7 +30,7 @@ pipeline {
             parallel {
                 stage("Build OS 2008R2") {
                     steps {
-                        OS2008R2 = build job:'packer-BaseOS', propogate: false, parameters: [
+                        build job:'packer-BaseOS', propogate: false, parameters: [
                             string(name: 'OSVersion', value: '2008R2')
                         ],
                         wait: true
@@ -56,16 +55,19 @@ pipeline {
             }
         }
         stage('Update OS') {
-            when {
-                expression {
-                    return OS2008R2.result() == 'SUCCESS'
+            parallel {
+                stage("Update 2008R2") {
+                    def lastRun = readJSON file: "${packer_build_directory}/2008R2-BuildOS-LastBuild.json"
+                    when {
+                        expression {"${lastRun.Status}" == 'SUCCESS'}
+                    }
+                    steps {
+                        build job: 'packer-Updates', parameters: [
+                            string(name: 'OSVersion', value: OS[1])
+                        ],
+                        wait: true
+                    }
                 }
-            }
-            steps {
-                build job: 'packer-Updates', parameters: [
-                    string(name: 'OSVersion', value: OS[1])
-                ],
-                wait: true
             }
         }
     }
