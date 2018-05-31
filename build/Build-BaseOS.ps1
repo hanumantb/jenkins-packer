@@ -6,8 +6,6 @@ param(
 # .source Helper-Functions
 . ./Helper-Functions.ps1
 
-Write-Host $PSScriptRoot
-
 # Set up Packer json file name based on OSVersion
 $packer_file = "01-$OSVersion-base.json"
 
@@ -25,4 +23,12 @@ Start-Sleep -Seconds $random
 Write-Host "Base OS was successfull for $OSVersion."
 
 # Set last status
-Set-LastBuild -OSVersion $OSVersion -Status SUCCEEDED -BuildDirectory $OutputDirectory -Task BuildOS
+
+#TODO: Remove this after testing!
+$rando = Get-Random -Minimum 1 -Maximum 2
+if($rando -eq 1) {
+    $Status = "SUCCEEDED"
+} else {
+    $Status = "FAILED"
+}
+Set-LastBuild -OSVersion $OSVersion -Status $Status -BuildDirectory $OutputDirectory -Task BuildOS

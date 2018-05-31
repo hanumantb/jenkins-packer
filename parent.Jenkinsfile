@@ -105,6 +105,56 @@ pipeline {
                 }
             }
         }
+        stage('Deploy OS') {
+            parallel {
+                stage("Deploy DEN3") {
+                    when {
+                        expression {
+                            lastRun = readJSON file: "${packer_build_directory}/2008R2-Updates-LastRun.json"
+                            "${lastRun.Status}" == 'SUCCEEDED'}
+                        }
+                    }
+                    steps {
+                        build job: 'packer-Deploy', parameters: [
+                            string(name: 'OSVersion', value: '2008R2'),
+                            string(name: 'DestinationVCenter', value: 'DEN3')
+                        ],
+                        wait: true
+                    }
+
+                }
+                stage("Deploy SEA1") {
+                    when {
+                        expression {
+                            lastRun = readJSON file: "${packer_build_directory}/2008R2-Updates-LastRun.json"
+                            "${lastRun.Status}" == 'SUCCEEDED'}
+                        }
+                    }
+                    steps {
+                        build job: 'packer-Deploy', parameters: [
+                            string(name: 'OSVersion', value: '2008R2'),
+                            string(name: 'DestinationVCenter', value: 'SEA1')
+                        ],
+                        wait: true
+                    }
+                }
+                stage("Deploy DEN4") {
+                    when {
+                        expression {
+                            lastRun = readJSON file: "${packer_build_directory}/2008R2-Updates-LastRun.json"
+                            "${lastRun.Status}" == 'SUCCEEDED'}
+                        }
+                    }
+                    steps {
+                        build job: 'packer-Deploy', parameters: [
+                            string(name: 'OSVersion', value: '2008R2'),
+                            string(name: 'DestinationVCenter', value: 'DEN4')
+                        ],
+                        wait: true
+                    }
+                }
+            }
+        }
     }
     post {
         success {

@@ -23,4 +23,12 @@ Start-Sleep -Seconds $random
 Write-Host "Updates were successfull for $OSVersion to $OutputDirectory"
 
 # Set last status
-Set-LastBuild -OSVersion $OSVersion -Status SUCCEEDED -BuildDirectory $OutputDirectory -Task Updates
+#TODO: Remove this after testing!
+$rando = Get-Random -Minimum 1 -Maximum 2
+if($rando -eq 1) {
+    $Status = "SUCCEEDED"
+} else {
+    $Status = "FAILED"
+}
+
+Set-LastBuild -OSVersion $OSVersion -Status $Status -BuildDirectory $OutputDirectory -Task Updates
