@@ -65,9 +65,7 @@ pipeline {
         stage('Update OS') {
             parallel {
                 stage("Update 2008R2") {
-                    steps {
-                        lastRun = readJSON file: "${packer_build_directory}/2008R2-BuildOS-LastBuild.json"
-                    }
+                    lastRun = readJSON file: "${packer_build_directory}/2008R2-BuildOS-LastBuild.json"
                     when {
                         expression {"${lastRun.Status}" == 'SUCCESS'}
                     }
