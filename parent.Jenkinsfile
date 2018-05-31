@@ -112,7 +112,7 @@ pipeline {
         }
         stage('Deploy OS') {
             def stepsForParallel = [:]
-            for(in i = 0; i < Destinations.size(); i++) {
+            for(int i = 0; i < Destinations.size(); i++) {
                 def dest = Destinations.get(i)
                 stepsForParallel["Deploy ${dest}"] = {
                     build job: 'packer-Deploy', parameters: [
