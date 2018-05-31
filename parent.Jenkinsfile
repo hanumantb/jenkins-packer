@@ -24,13 +24,18 @@ pipeline {
     //     )
     // }
     stages {
+        stage('Set Description') {
+            script {
+                currentBuild.description = "${buildDesc}"
+            }
+        }
         stage('Build OS') {
             // Run OS builds in parallel
             //TODO: It would be nice to dynamically do this, but it seems difficult using a declaritive pipeline
             parallel {
                 stage("Build OS 2008R2") {
                     steps {
-                        build job:'packer-BaseOS', propogate: false, parameters: [
+                        build job:'packer-BaseOS', propagate: false, parameters: [
                             string(name: 'OSVersion', value: '2008R2')
                         ],
                         wait: true
