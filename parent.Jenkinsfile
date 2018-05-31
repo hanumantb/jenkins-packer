@@ -1,6 +1,7 @@
 def buildDesc = "Packer - Deploy \\ Parent"
 def OS = ["2008R2", "2012R2", "2016"]
 def lastRun;
+def Destinations = ["DEN3", "DEN4", "DEN2", "SEA1", "SEA2"]
 
 pipeline {
     agent { label 'packer' }
@@ -110,7 +111,7 @@ pipeline {
         }
         stage('Deploy OS') {
             parallel {
-                stage("Deploy DEN3") {
+                stage("Deploy 2008R2") {
                     when {
                         expression {
                             lastRun = readJSON file: "${packer_build_directory}/2008R2-Updates-LastRun.json"
@@ -118,13 +119,14 @@ pipeline {
                         }
                     }
                     steps {
-                        build job: 'packer-Deploy', parameters: [
-                            string(name: 'OSVersion', value: '2008R2'),
-                            string(name: 'DestinationVCenter', value: 'DEN3')
-                        ],
-                        wait: true
+                        for(Dest in Destinations) {
+                            build job: 'packer-Deploy', parameters: [
+                                string(name: 'OSVersion', value: '2008R2'),
+                                string(name: 'DestinationVCenter', value: Dest)
+                            ],
+                            wait: true
+                        }
                     }
-
                 }
                 stage("Deploy SEA1") {
                     when {

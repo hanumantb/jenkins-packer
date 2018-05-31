@@ -31,4 +31,5 @@ if($rando -eq 1) {
 } else {
     $Status = "FAILED"
 }
+
 Set-LastBuild -OSVersion $OSVersion -Status $Status -BuildDirectory $OutputDirectory -Task BuildOS

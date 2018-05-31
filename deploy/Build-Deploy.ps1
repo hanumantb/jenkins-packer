@@ -26,4 +26,12 @@ Start-Sleep -Seconds $random
 Write-Host "Deploy was successfull for $OSVersion to $DestinationVCenter with Templates to keep: $NumTemplates and versioning being $RunVersioning."
 
 # Set last status
-Set-LastBuild -OSVersion $OSVersion -Status SUCCEEDED -BuildDirectory $OutputDirectory -Task Deploy
+#TODO: Remove this after testing!
+$rando = Get-Random -Minimum 1 -Maximum 2
+if($rando -eq 1) {
+    $Status = "SUCCEEDED"
+} else {
+    $Status = "FAILED"
+}
+
+Set-LastBuild -OSVersion $OSVersion -Status $Status -BuildDirectory $OutputDirectory -Task Deploy
