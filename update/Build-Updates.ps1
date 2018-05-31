@@ -1,10 +1,10 @@
-# .source Helper-Functions
-. ../Helper-Functions.ps1
-
 param(
     $OSVersion,
-    $OutputDirectory
+    $OutputDirectory = "D:\PackerBuilds\"
 )
+
+# .source Helper-Functions
+. ./Helper-Functions.ps1
 
 # Set up Packer json file name based on OSVersion
 $packer_file = "02-$OSVersion-updates.json"

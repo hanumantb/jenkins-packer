@@ -1,13 +1,13 @@
-# .source Helper-Functions
-. ../Helper-Functions.ps1
-
 param(
     $OSVersion,
-    $OutputDirectory,
+    $OutputDirectory = "D:\PackerBuilds\",
     $DestinationVCenter,
     [int]$NumTemplates = 2,
     [Switch]$RunVersioning
 )
+
+# .source Helper-Functions
+. ./Helper-Functions.ps1
 
 # Set up Packer json file name based on OSVersion
 $packer_file = "03-$OSVersion-vsphere.json"
