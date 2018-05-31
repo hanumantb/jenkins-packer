@@ -1,5 +1,5 @@
 # .source Helper-Functions
-. ../Helper-Functions
+. ../Helper-Functions.ps1
 
 param(
     $OSVersion,
