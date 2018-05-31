@@ -111,62 +111,75 @@ pipeline {
             }
         }
         stage('Deploy OS') {
-            //parallel {
-                stage("Deploy 2008R2") {
-                    when {
-                        expression {
-                            lastRun = readJSON file: "${packer_build_directory}/2008R2-Updates-LastRun.json"
-                            "${lastRun.Status}" == 'SUCCEEDED'
-                        }
-                    }
-                    steps {
-                        builds = []
-                        for(Dest in Destinations) {
-                            curJob = {
-                                    build job: 'packer-Deploy', parameters: [
-                                    string(name: 'OSVersion', value: '2008R2'),
-                                    string(name: 'DestinationVCenter', value: Dest)
-                                ],
-                                wait: true
-                            }
-                            builds.add(curJob)
-                        }
-                        parallel(builds)
-                    }
+            def stepsForParallel = [:]
+            for(in i = 0; i < Destinations.size(); i++) {
+                def dest = Destinations.get(i)
+                stepsForParallel["Deploy ${dest}"] = {
+                    build job: 'packer-Deploy', parameters: [
+                    string(name: 'OSVersion', value: '2008R2'),
+                    string(name: 'DestinationVCenter', value: dest)
+                    ],
+                    wait: true
                 }
-                // stage("Deploy SEA1") {
-                //     when {
-                //         expression {
-                //             lastRun = readJSON file: "${packer_build_directory}/2008R2-Updates-LastRun.json"
-                //             "${lastRun.Status}" == 'SUCCEEDED'
-                //         }
-                //     }
-                //     steps {
-                //         build job: 'packer-Deploy', parameters: [
-                //             string(name: 'OSVersion', value: '2008R2'),
-                //             string(name: 'DestinationVCenter', value: 'SEA1')
-                //         ],
-                //         wait: true
-                //     }
-                // }
-                // stage("Deploy DEN4") {
-                //     when {
-                //         expression {
-                //             lastRun = readJSON file: "${packer_build_directory}/2008R2-Updates-LastRun.json"
-                //             "${lastRun.Status}" == 'SUCCEEDED'
-                //         }
-                //     }
-                //     steps {
-                //         build job: 'packer-Deploy', parameters: [
-                //             string(name: 'OSVersion', value: '2008R2'),
-                //             string(name: 'DestinationVCenter', value: 'DEN4')
-                //         ],
-                //         wait: true
-                //     }
-                // }
-            //}
+            }
+            parallel stepsForParallel
         }
-    }
+        //     //parallel {
+        //         stage("Deploy 2008R2") {
+        //             when {
+        //                 expression {
+        //                     lastRun = readJSON file: "${packer_build_directory}/2008R2-Updates-LastRun.json"
+        //                     "${lastRun.Status}" == 'SUCCEEDED'
+        //                 }
+        //             }
+        //             steps {
+        //                 def builds = []
+        //                 for(Dest in Destinations) {
+        //                     curJob = {
+        //                             build job: 'packer-Deploy', parameters: [
+        //                             string(name: 'OSVersion', value: '2008R2'),
+        //                             string(name: 'DestinationVCenter', value: Dest)
+        //                         ],
+        //                         wait: true
+        //                     }
+        //                     builds.add(curJob)
+        //                 }
+        //                 parallel(builds)
+        //             }
+        //         }
+        //         // stage("Deploy SEA1") {
+        //         //     when {
+        //         //         expression {
+        //         //             lastRun = readJSON file: "${packer_build_directory}/2008R2-Updates-LastRun.json"
+        //         //             "${lastRun.Status}" == 'SUCCEEDED'
+        //         //         }
+        //         //     }
+        //         //     steps {
+        //         //         build job: 'packer-Deploy', parameters: [
+        //         //             string(name: 'OSVersion', value: '2008R2'),
+        //         //             string(name: 'DestinationVCenter', value: 'SEA1')
+        //         //         ],
+        //         //         wait: true
+        //         //     }
+        //         // }
+        //         // stage("Deploy DEN4") {
+        //         //     when {
+        //         //         expression {
+        //         //             lastRun = readJSON file: "${packer_build_directory}/2008R2-Updates-LastRun.json"
+        //         //             "${lastRun.Status}" == 'SUCCEEDED'
+        //         //         }
+        //         //     }
+        //         //     steps {
+        //         //         build job: 'packer-Deploy', parameters: [
+        //         //             string(name: 'OSVersion', value: '2008R2'),
+        //         //             string(name: 'DestinationVCenter', value: 'DEN4')
+        //         //         ],
+        //         //         wait: true
+        //         //     }
+        //         // }
+        //     //}
+        // }
+    //}
     post {
         success {
             powershell '''
