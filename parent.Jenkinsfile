@@ -42,11 +42,19 @@ pipeline {
                             string(name: 'OSVersion', value: '2008R2')
                         ],
                         wait: true
+                        build job: 'packer-Updates', parameters: [
+                            string(name: 'OSVersion', value: '2012R2')
+                        ],
+                        wait: true
                     }
                 }
                 stage("Build OS 2012R2") {
                     steps {
                         build job:'packer-BaseOS', parameters: [
+                            string(name: 'OSVersion', value: '2012R2')
+                        ],
+                        wait: true
+                        build job: 'packer-Updates', parameters: [
                             string(name: 'OSVersion', value: '2012R2')
                         ],
                         wait: true
@@ -56,6 +64,10 @@ pipeline {
                     steps {
                         build job:'packer-BaseOS', parameters: [
                             string(name: 'OSVersion', value: '2016')
+                        ],
+                        wait: true
+                        build job: 'packer-Updates', parameters: [
+                            string(name: 'OSVersion', value: '2012R2')
                         ],
                         wait: true
                     }
