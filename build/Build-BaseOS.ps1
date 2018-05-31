@@ -1,6 +1,8 @@
 # .source Helper-Functions
 . ../Helper-Functions.ps1
 
+Write-Host $PSScriptRoot
+
 param(
     $OSVersion,
     $OutputDirectory
