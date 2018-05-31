@@ -68,7 +68,8 @@ pipeline {
                     when {
                         expression {
                             lastRun = readJSON file: "${packer_build_directory}/2008R2-BuildOS-LastRun.json"
-                            "${lastRun.Status}" == 'SUCCEEDED'}
+                            "${lastRun.Status}" == 'SUCCEEDED'
+                        }
                     }
                     steps {
                         build job: 'packer-Updates', parameters: [
@@ -81,7 +82,8 @@ pipeline {
                     when {
                         expression {
                             lastRun = readJSON file: "${packer_build_directory}/2012R2-BuildOS-LastRun.json"
-                            "${lastRun.Status}" == 'SUCCEEDED'}
+                            "${lastRun.Status}" == 'SUCCEEDED'
+                        }
                     }
                     steps {
                         build job: 'packer-Updates', parameters: [
@@ -94,7 +96,8 @@ pipeline {
                     when {
                         expression {
                             lastRun = readJSON file: "${packer_build_directory}/2016-BuildOS-LastRun.json"
-                            "${lastRun.Status}" == 'SUCCEEDED'}
+                            "${lastRun.Status}" == 'SUCCEEDED'
+                        }
                     }
                     steps {
                         build job: 'packer-Updates', parameters: [
@@ -111,7 +114,7 @@ pipeline {
                     when {
                         expression {
                             lastRun = readJSON file: "${packer_build_directory}/2008R2-Updates-LastRun.json"
-                            "${lastRun.Status}" == 'SUCCEEDED'}
+                            "${lastRun.Status}" == 'SUCCEEDED'
                         }
                     }
                     steps {
@@ -127,7 +130,7 @@ pipeline {
                     when {
                         expression {
                             lastRun = readJSON file: "${packer_build_directory}/2008R2-Updates-LastRun.json"
-                            "${lastRun.Status}" == 'SUCCEEDED'}
+                            "${lastRun.Status}" == 'SUCCEEDED'
                         }
                     }
                     steps {
@@ -142,7 +145,7 @@ pipeline {
                     when {
                         expression {
                             lastRun = readJSON file: "${packer_build_directory}/2008R2-Updates-LastRun.json"
-                            "${lastRun.Status}" == 'SUCCEEDED'}
+                            "${lastRun.Status}" == 'SUCCEEDED'
                         }
                     }
                     steps {
