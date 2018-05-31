@@ -14,5 +14,5 @@ function Set-LastBuild {
         Task = $Task
     }
 
-    $obj | ConvertTo-Json | Out-File -FilePath "$BuildDirectory/$FileName" -Force
+    $obj | ConvertTo-Json | Add-Content -Path "$BuildDirectory/$FileName" -Force
 }
