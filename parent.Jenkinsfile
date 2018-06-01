@@ -98,27 +98,27 @@ pipeline {
             //     }
             // }
         }
-        stage('Update OS') {
-            steps {
-                script {
-                    parallel updateJobs
-                }
-            }
-            // parallel {
-                stage("Update 2008R2") {
-                    when {
-                        expression {
-                            lastRun = readJSON file: "${packer_build_directory}/2008R2-BuildOS-LastRun.json"
-                            "${lastRun.Status}" == 'SUCCEEDED'
-                        }
-                    }
-                    steps {
-                        build job: 'packer-Updates', parameters: [
-                            string(name: 'OSVersion', value: '2008R2')
-                        ],
-                        wait: true
-                    }
-                }
+        // stage('Update OS') {
+        //     steps {
+        //         script {
+        //             parallel updateJobs
+        //         }
+        //     }
+        //     // parallel {
+        //         stage("Update 2008R2") {
+        //             when {
+        //                 expression {
+        //                     lastRun = readJSON file: "${packer_build_directory}/2008R2-BuildOS-LastRun.json"
+        //                     "${lastRun.Status}" == 'SUCCEEDED'
+        //                 }
+        //             }
+        //             steps {
+        //                 build job: 'packer-Updates', parameters: [
+        //                     string(name: 'OSVersion', value: '2008R2')
+        //                 ],
+        //                 wait: true
+        //             }
+        //         }
             //     stage("Update 2012R2") {
             //         when {
             //             expression {
