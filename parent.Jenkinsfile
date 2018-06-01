@@ -31,7 +31,7 @@ for(int i = 0; i < OS.size(); i++) {
         deployJobs["Deploy OS ${OS.getAt(i)} to ${Destinations.get(j)}"] = {
             build job: 'packer-Deploy', parameters: [
             string(name: 'OSVersion', value: osString),
-            string(name: 'DestinationVcenter', value: destString), wait: true
+            string(name: 'DestinationVcenter', value: destString)], wait: true
         }
     }
 }
