@@ -4,6 +4,25 @@ def lastRun;
 def Destinations = ["DEN3", "DEN4", "DEN2", "SEA1", "SEA2"]
 // def builds;  //TODO: Is it necessary to put these up here?
 
+// Set up jobs
+def buildOSJobs = [:]
+for(int i = 0; i < OS.size(); i++) {
+    buildOSJobs["Build OS ${OS[i]}"] = {
+        build job: 'packer-BaseOS', parameters: [
+        string(name: 'OSVersion', value: "${OS[i]}")]
+    }
+}
+
+def updateJobs = [:]
+for(int i = 0; i < OS.size(); i++) {
+    updateJobs["Update OS ${OS[i]}"] = {
+        build job: 'packer-Updates', parameters: [
+            string(name: 'OSVersion', value: "${OS[i]}")]
+    }
+}
+
+def deployJobs = [:]
+
 pipeline {
     agent { label 'packer' }
     environment {
@@ -35,95 +54,106 @@ pipeline {
             }
         }
         stage('Build OS') {
+            steps {
+                script {
+                    parallel buildOSJobs
+                }
+            }
+
             // Run OS builds in parallel
             //TODO: It would be nice to dynamically do this, but it seems difficult using a declaritive pipeline
-            parallel {
-                stage("Build OS 2008R2") {
-                    steps {
-                        build job:'packer-BaseOS', propagate: false, parameters: [
-                            string(name: 'OSVersion', value: '2008R2')
-                        ],
-                        wait: true
-                    }
-                }
-                stage("Build OS 2012R2") {
-                    steps {
-                        build job:'packer-BaseOS', parameters: [
-                            string(name: 'OSVersion', value: '2012R2')
-                        ],
-                        wait: true
-                    }
-                }
-                stage("Build OS 2016") {
-                    steps {
-                        build job:'packer-BaseOS', parameters: [
-                            string(name: 'OSVersion', value: '2016')
-                        ],
-                        wait: true
-                    }
-                }
-            }
+            // parallel {
+            //     stage("Build OS 2008R2") {
+            //         steps {
+            //             build job:'packer-BaseOS', propagate: false, parameters: [
+            //                 string(name: 'OSVersion', value: '2008R2')
+            //             ],
+            //             wait: true
+            //         }
+            //     }
+            //     stage("Build OS 2012R2") {
+            //         steps {
+            //             build job:'packer-BaseOS', parameters: [
+            //                 string(name: 'OSVersion', value: '2012R2')
+            //             ],
+            //             wait: true
+            //         }
+            //     }
+            //     stage("Build OS 2016") {
+            //         steps {
+            //             build job:'packer-BaseOS', parameters: [
+            //                 string(name: 'OSVersion', value: '2016')
+            //             ],
+            //             wait: true
+            //         }
+            //     }
+            // }
         }
         stage('Update OS') {
-            parallel {
-                stage("Update 2008R2") {
-                    when {
-                        expression {
-                            lastRun = readJSON file: "${packer_build_directory}/2008R2-BuildOS-LastRun.json"
-                            "${lastRun.Status}" == 'SUCCEEDED'
-                        }
-                    }
-                    steps {
-                        build job: 'packer-Updates', parameters: [
-                            string(name: 'OSVersion', value: '2008R2')
-                        ],
-                        wait: true
-                    }
-                }
-                stage("Update 2012R2") {
-                    when {
-                        expression {
-                            lastRun = readJSON file: "${packer_build_directory}/2012R2-BuildOS-LastRun.json"
-                            "${lastRun.Status}" == 'SUCCEEDED'
-                        }
-                    }
-                    steps {
-                        build job: 'packer-Updates', parameters: [
-                            string(name: 'OSVersion', value: '2012R2')
-                        ],
-                        wait: true
-                    }
-                }
-                stage("Update 2016") {
-                    when {
-                        expression {
-                            lastRun = readJSON file: "${packer_build_directory}/2016-BuildOS-LastRun.json"
-                            "${lastRun.Status}" == 'SUCCEEDED'
-                        }
-                    }
-                    steps {
-                        build job: 'packer-Updates', parameters: [
-                            string(name: 'OSVersion', value: '2016')
-                        ],
-                        wait: true
-                    }
+            steps {
+                script {
+                    parallel updateJobs
                 }
             }
+            // parallel {
+            //     stage("Update 2008R2") {
+            //         when {
+            //             expression {
+            //                 lastRun = readJSON file: "${packer_build_directory}/2008R2-BuildOS-LastRun.json"
+            //                 "${lastRun.Status}" == 'SUCCEEDED'
+            //             }
+            //         }
+            //         steps {
+            //             build job: 'packer-Updates', parameters: [
+            //                 string(name: 'OSVersion', value: '2008R2')
+            //             ],
+            //             wait: true
+            //         }
+            //     }
+            //     stage("Update 2012R2") {
+            //         when {
+            //             expression {
+            //                 lastRun = readJSON file: "${packer_build_directory}/2012R2-BuildOS-LastRun.json"
+            //                 "${lastRun.Status}" == 'SUCCEEDED'
+            //             }
+            //         }
+            //         steps {
+            //             build job: 'packer-Updates', parameters: [
+            //                 string(name: 'OSVersion', value: '2012R2')
+            //             ],
+            //             wait: true
+            //         }
+            //     }
+            //     stage("Update 2016") {
+            //         when {
+            //             expression {
+            //                 lastRun = readJSON file: "${packer_build_directory}/2016-BuildOS-LastRun.json"
+            //                 "${lastRun.Status}" == 'SUCCEEDED'
+            //             }
+            //         }
+            //         steps {
+            //             build job: 'packer-Updates', parameters: [
+            //                 string(name: 'OSVersion', value: '2016')
+            //             ],
+            //             wait: true
+            //         }
+            //     }
+            // }
         }
-        stage('Deploy OS') {
-            def stepsForParallel = [:]
-            for(int i = 0; i < Destinations.size(); i++) {
-                def dest = Destinations.get(i)
-                stepsForParallel["Deploy ${dest}"] = {
-                    build job: 'packer-Deploy', parameters: [
-                    string(name: 'OSVersion', value: '2008R2'),
-                    string(name: 'DestinationVCenter', value: dest)
-                    ],
-                    wait: true
-                }
-            }
-            parallel stepsForParallel
-        }
+        // stage('Deploy OS') {
+        //     def stepsForParallel = [:]
+        //     for(int i = 0; i < Destinations.size(); i++) {
+        //         def dest = Destinations.get(i)
+        //         stepsForParallel["Deploy ${dest}"] = {
+        //             build job: 'packer-Deploy', parameters: [
+        //             string(name: 'OSVersion', value: '2008R2'),
+        //             string(name: 'DestinationVCenter', value: dest)
+        //             ],
+        //             wait: true
+        //         }
+        //     }
+        //     parallel stepsForParallel
+        // }
         //     //parallel {
         //         stage("Deploy 2008R2") {
         //             when {
