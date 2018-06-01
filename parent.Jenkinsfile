@@ -56,6 +56,13 @@ pipeline {
                 }
             }
         }
+        stage('Update OS') {
+            steps {
+                script {
+                    parallel updateJobs
+                }
+            }
+        }
         stage('Deploy OS') {
             steps {
                 script {
