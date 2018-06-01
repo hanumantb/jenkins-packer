@@ -7,10 +7,9 @@ def Destinations = ["DEN3", "DEN4", "DEN2", "SEA1", "SEA2"]
 // Set up jobs
 def buildOSJobs = [:]
 for(int i = 0; i < OS.size(); i++) {
-    echo "Running for OS Version: ${OS[i]}"
     buildOSJobs["Build OS ${OS[i]}"] = {
         build job: 'packer-BaseOS', parameters: [
-        string(name: 'OSVersion', value: OS[i])]
+        string(name: 'OSVersion', value: "${OS[i]}")]
     }
 }
 
