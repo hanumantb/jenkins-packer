@@ -27,7 +27,7 @@ Write-Host "Deploy was successfull for $OSVersion to $DestinationVCenter with Te
 
 # Set last status
 #TODO: Remove this after testing!
-$rando = Get-Random -Minimum 1 -Maximum 2
+$rando = Get-Random -Minimum 1 -Maximum 3
 if($rando -eq 1) {
     $Status = "SUCCEEDED"
 } else {
