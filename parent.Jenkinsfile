@@ -28,8 +28,8 @@ for(int i = 0; i < OS.size(); i++) {
 
 def deployJobs = [:]
 for(int i = 0; i < OS.size(); i++) {
+    def index = i
     for(int j = 0; j < Destinations.size(); j++) {
-        def index = i
         def osString = OS[index]
         def indexj = j
         destString = Destinations[indexj]
