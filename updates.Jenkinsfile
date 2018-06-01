@@ -18,6 +18,11 @@ pipeline {
         )
     }
     stages {
+        stage('Set Description') {
+            script {
+                currentBuild.description = "${buildDesc}"
+            }
+        }
         stage('BaseOS') {
             steps {
                 powershell '''

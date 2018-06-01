@@ -1,4 +1,4 @@
-def buildDesc = "Packer - Deploy \\ {$OSVersion}"
+def buildDesc = "Packer - Deploy \\ {$OSVersion} \\ {$DestinationVCenter}"
 
 pipeline {
     agent { label 'packer' }
@@ -23,6 +23,11 @@ pipeline {
         )
     }
     stages {
+        stage('Set Description') {
+            script {
+                currentBuild.description = "${buildDesc}"
+            }
+        }
         stage('Deploy') {
             steps {
                 powershell '''

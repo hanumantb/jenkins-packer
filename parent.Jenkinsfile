@@ -1,4 +1,4 @@
-def buildDesc = "Packer - Deploy \\ Parent"
+def buildDesc = "Packer - Parent Pipeline"
 def OS = ["2008R2", "2012R2", "2016"]
 def lastRun;
 def Destinations = ["DEN3", "DEN4", "DEN2", "SEA1", "SEA2"]
