@@ -7,26 +7,26 @@ def Destinations = ["DEN3", "DEN4", "DEN2", "SEA1", "SEA2"]
 // Set up jobs
 def buildOSJobs = [:]
 for(int i = 0; i < OS.size(); i++) {
-    buildOSJobs["Build OS ${OS[i]}"] = {
+    buildOSJobs["Build OS ${OS.getAt(i)}"] = {
         build job: 'packer-BaseOS', parameters: [
-        string(name: 'OSVersion', value: "${OS.get(i)}")]
+        string(name: 'OSVersion', value: "${OS.getAt(i)}")]
     }
 }
 
 def updateJobs = [:]
 for(int i = 0; i < OS.size(); i++) {
-    updateJobs["Update OS ${OS[i]}"] = {
+    updateJobs["Update OS ${OS.getAt(i)}"] = {
         build job: 'packer-Updates', parameters: [
-            string(name: 'OSVersion', value: "${OS.get(i)}")]
+            string(name: 'OSVersion', value: "${OS.getAt(i)}")]
     }
 }
 
 def deployJobs = [:]
 for(int i = 0; i < OS.size(); i++) {
     for(int j = 0; j < Destinations.size(); j++) {
-        deployJobs["Deploy OS ${OS[i]} to ${Destinations[j]}"] = {
+        deployJobs["Deploy OS ${OS.getAt(i)} to ${Destinations.get(j)}"] = {
             build job: 'packer-Deploy', parameters: [
-            string(name: 'OSVersion', value: "${OS.get(i)}"),
+            string(name: 'OSVersion', value: "${OS.getAt(i)}"),
             string(name: 'DestinationVcenter', value: Destinations[j])], wait: true
         }
     }
@@ -105,20 +105,20 @@ pipeline {
                 }
             }
             // parallel {
-            //     stage("Update 2008R2") {
-            //         when {
-            //             expression {
-            //                 lastRun = readJSON file: "${packer_build_directory}/2008R2-BuildOS-LastRun.json"
-            //                 "${lastRun.Status}" == 'SUCCEEDED'
-            //             }
-            //         }
-            //         steps {
-            //             build job: 'packer-Updates', parameters: [
-            //                 string(name: 'OSVersion', value: '2008R2')
-            //             ],
-            //             wait: true
-            //         }
-            //     }
+                stage("Update 2008R2") {
+                    when {
+                        expression {
+                            lastRun = readJSON file: "${packer_build_directory}/2008R2-BuildOS-LastRun.json"
+                            "${lastRun.Status}" == 'SUCCEEDED'
+                        }
+                    }
+                    steps {
+                        build job: 'packer-Updates', parameters: [
+                            string(name: 'OSVersion', value: '2008R2')
+                        ],
+                        wait: true
+                    }
+                }
             //     stage("Update 2012R2") {
             //         when {
             //             expression {
