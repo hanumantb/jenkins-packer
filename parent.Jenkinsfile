@@ -9,7 +9,7 @@ def buildOSJobs = [:]
 for(int i = 0; i < OS.size(); i++) {
     buildOSJobs["Build OS ${OS[i]}"] = {
         build job: 'packer-BaseOS', parameters: [
-        string(name: 'OSVersion', value: "${OS[i]}")]
+        string(name: 'OSVersion', value: "${OS.get(i)}")]
     }
 }
 
@@ -17,7 +17,7 @@ def updateJobs = [:]
 for(int i = 0; i < OS.size(); i++) {
     updateJobs["Update OS ${OS[i]}"] = {
         build job: 'packer-Updates', parameters: [
-            string(name: 'OSVersion', value: OS[i])]
+            string(name: 'OSVersion', value: "${OS.get(i)}")]
     }
 }
 
@@ -26,7 +26,7 @@ for(int i = 0; i < OS.size(); i++) {
     for(int j = 0; j < Destinations.size(); j++) {
         deployJobs["Deploy OS ${OS[i]} to ${Destinations[j]}"] = {
             build job: 'packer-Deploy', parameters: [
-            string(name: 'OSVersion', value: OS[i]),
+            string(name: 'OSVersion', value: "${OS.get(i)}"),
             string(name: 'DestinationVcenter', value: Destinations[j])], wait: true
         }
     }
