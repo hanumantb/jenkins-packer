@@ -1,4 +1,4 @@
-def buildDesc = "Packer - BaseOS \\ {$OSVersion}"
+def buildDesc = "Packer - BaseOS \\ ${OSVersion}"
 // TODO: Try adding choices here and referencing in parameters
 // TODO: Can you call a pipeline from a pipeline?
 

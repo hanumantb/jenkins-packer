@@ -1,4 +1,4 @@
-def buildDesc = "Packer - Deploy \\ {$OSVersion} \\ {$DestinationVCenter}"
+def buildDesc = "Packer - Deploy \\ ${OSVersion} \\ ${DestinationVCenter}"
 
 pipeline {
     agent { label 'packer' }

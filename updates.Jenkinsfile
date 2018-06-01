@@ -1,4 +1,4 @@
-def buildDesc = "Packer - Updates \\ {$OSVersion}"
+def buildDesc = "Packer - Updates \\ ${OSVersion}"
 
 pipeline {
     agent { label 'packer' }
