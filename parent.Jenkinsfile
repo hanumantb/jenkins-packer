@@ -7,9 +7,10 @@ def Destinations = ["DEN3", "DEN4", "DEN2", "SEA1", "SEA2"]
 // Set up jobs
 def buildOSJobs = [:]
 for(int i = 0; i < OS.size(); i++) {
+    echo "Running for OS Version: ${OS[i]}"
     buildOSJobs["Build OS ${OS[i]}"] = {
         build job: 'packer-BaseOS', parameters: [
-        string(name: 'OSVersion', value: "${OS[i]}")]
+        string(name: 'OSVersion', value: OS[i])]
     }
 }
 
@@ -17,28 +18,18 @@ def updateJobs = [:]
 for(int i = 0; i < OS.size(); i++) {
     updateJobs["Update OS ${OS[i]}"] = {
         build job: 'packer-Updates', parameters: [
-            string(name: 'OSVersion', value: "${OS[i]}")]
+            string(name: 'OSVersion', value: OS[i])]
     }
 }
 
 def deployJobs = [:]
 for(int i = 0; i < OS.size(); i++) {
-    deployJobs["Deploy OS ${OS[i]}"] = {
-        build job: 'packer-Deploy', parameters: [
-        string(name: 'OSVersion', value: "${OS[i]}"),
-        string(name: 'DestinationVcenter', value: "DEN3")], wait: true
-
-        build job: 'packer-Deploy', parameters: [
-        string(name: 'OSVersion', value: "${OS[i]}"),
-        string(name: 'DestinationVcenter', value: "DEN4")], wait: true
-
-        build job: 'packer-Deploy', parameters: [
-        string(name: 'OSVersion', value: "${OS[i]}"),
-        string(name: 'DestinationVcenter', value: "SEA1")], wait: true
-
-        build job: 'packer-Deploy', parameters: [
-        string(name: 'OSVersion', value: "${OS[i]}"),
-        string(name: 'DestinationVcenter', value: "SEA2")], wait: true
+    for(int j = 0; j < Destinations.size(); j++) {
+        deployJobs["Deploy OS ${OS[i]} to ${Destinations[j]}"] = {
+            build job: 'packer-Deploy', parameters: [
+            string(name: 'OSVersion', value: OS[i]),
+            string(name: 'DestinationVcenter', value: Destinations[j])], wait: true
+        }
     }
 }
 
