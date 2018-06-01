@@ -7,27 +7,31 @@ def Destinations = ["DEN3", "DEN4", "DEN2", "SEA1", "SEA2"]
 // Set up jobs
 def buildOSJobs = [:]
 for(int i = 0; i < OS.size(); i++) {
+    osString = OS[i]
     buildOSJobs["Build OS ${OS.getAt(i)}"] = {
         build job: 'packer-BaseOS', parameters: [
-        string(name: 'OSVersion', value: OS.getAt(i))]
+        string(name: 'OSVersion', value: osString)]
     }
 }
 
 def updateJobs = [:]
 for(int i = 0; i < OS.size(); i++) {
+    osString = OS[i]
     updateJobs["Update OS ${OS.getAt(i)}"] = {
         build job: 'packer-Updates', parameters: [
-            string(name: 'OSVersion', value: OS.getAt(i))]
+            string(name: 'OSVersion', value: osString)]
     }
 }
 
 def deployJobs = [:]
 for(int i = 0; i < OS.size(); i++) {
     for(int j = 0; j < Destinations.size(); j++) {
+        osString = OS[i]
+        destString = Destinations[j]
         deployJobs["Deploy OS ${OS.getAt(i)} to ${Destinations.get(j)}"] = {
             build job: 'packer-Deploy', parameters: [
-            string(name: 'OSVersion', value: OS.getAt(i)),
-            string(name: 'DestinationVcenter', value: Destinations[j])], wait: true
+            string(name: 'OSVersion', value: osString,
+            string(name: 'DestinationVcenter', value: destString)], wait: true
         }
     }
 }
