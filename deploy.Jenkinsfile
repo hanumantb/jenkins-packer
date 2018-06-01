@@ -24,8 +24,10 @@ pipeline {
     }
     stages {
         stage('Set Description') {
-            script {
-                currentBuild.description = "${buildDesc}"
+            steps {
+                script {
+                    currentBuild.description = "${buildDesc}"
+                }
             }
         }
         stage('Deploy') {
