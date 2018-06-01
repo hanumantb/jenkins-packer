@@ -24,19 +24,19 @@ for(int i = 0; i < OS.size(); i++) {
 def deployJobs = [:]
 for(int i = 0; i < OS.size(); i++) {
     deployJobs["Deploy OS ${OS[i]}"] = {
-        build job: 'packer-Updates', parameters: [
+        build job: 'packer-Deploy', parameters: [
         string(name: 'OSVersion', value: "${OS[i]}"),
         string(name: 'DestinationVcenter', value: "DEN3")], wait: true
 
-        build job: 'packer-Updates', parameters: [
+        build job: 'packer-Deploy', parameters: [
         string(name: 'OSVersion', value: "${OS[i]}"),
         string(name: 'DestinationVcenter', value: "DEN4")], wait: true
 
-        build job: 'packer-Updates', parameters: [
+        build job: 'packer-Deploy', parameters: [
         string(name: 'OSVersion', value: "${OS[i]}"),
         string(name: 'DestinationVcenter', value: "SEA1")], wait: true
 
-        build job: 'packer-Updates', parameters: [
+        build job: 'packer-Deploy', parameters: [
         string(name: 'OSVersion', value: "${OS[i]}"),
         string(name: 'DestinationVcenter', value: "SEA2")], wait: true
     }
