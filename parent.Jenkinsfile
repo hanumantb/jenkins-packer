@@ -21,6 +21,11 @@ for(int i = 0; i < OS.size(); i++) {
     def osString = OS[index]
 
     updateJobs["Update OS ${OS.getAt(index)}"] = {
+        when {
+            expression {
+                getLastJobStatus(osString, "Updates")
+            }
+        }
         build job: 'packer-Updates', parameters: [
             string(name: 'OSVersion', value: osString)]
     }
@@ -77,6 +82,10 @@ deployJobsBatch3["Deploy OS 2016 to DEN2"] = {
         string(name: 'DestinationVcenter', value: "DEN2")], wait: true
 }
 
+def getLastJobStatus(osVersion, task) {
+    lastRun = readJSON file: "${packer_build_directory}/${osVersion}-${task}-LastRun.json"
+    return lastRun.Status == 'SUCCEEDED'
+}
 
 pipeline {
     agent { label 'packer' }
