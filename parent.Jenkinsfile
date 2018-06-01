@@ -9,7 +9,7 @@ def buildOSJobs = [:]
 for(int i = 0; i < OS.size(); i++) {
     buildOSJobs["Build OS ${OS.getAt(i)}"] = {
         build job: 'packer-BaseOS', parameters: [
-        string(name: 'OSVersion', value: OS.getAt(i)]
+        string(name: 'OSVersion', value: OS.getAt(i))]
     }
 }
 
