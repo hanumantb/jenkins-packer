@@ -20,7 +20,7 @@ for(int i = 0; i < OS.size(); i++) {
     def index = i
     def osString = OS[index]
 
-    updateJobs["Update OS ${OS.getAt(i)}"] = {
+    updateJobs["Update OS ${OS.getAt(index)}"] = {
         build job: 'packer-Updates', parameters: [
             string(name: 'OSVersion', value: osString)]
     }
@@ -33,7 +33,7 @@ for(int i = 0; i < OS.size(); i++) {
         def osString = OS[index]
         def indexj = j
         destString = Destinations[indexj]
-        deployJobs["Deploy OS ${OS.getAt(i)} to ${Destinations.get(j)}"] = {
+        deployJobs["Deploy OS ${OS.getAt(index)} to ${Destinations.get(indexj)}"] = {
             build job: 'packer-Deploy', parameters: [
             string(name: 'OSVersion', value: osString),
             string(name: 'DestinationVcenter', value: destString)], wait: true
