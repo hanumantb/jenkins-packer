@@ -1,5 +1,10 @@
 def buildDesc = "Packer - Updates \\ ${OSVersion}"
 
+def getLastJobStatus(osVersion, task) {
+    lastRun = readJSON file: "${packer_build_directory}/${osVersion}-${task}-LastRun.json"
+    return lastRun.Status == 'SUCCEEDED'
+}
+
 pipeline {
     agent { label 'packer' }
     environment {
@@ -26,6 +31,9 @@ pipeline {
             }
         }
         stage('BaseOS') {
+            when {
+                getLastJobStatus(osVersion, "Updates")
+            }
             steps {
                 powershell '''
                     .\\update\\Build-Updates.ps1 -OSVersion $env:OSVersion -OutputDirectory $env:packer_build_directory
