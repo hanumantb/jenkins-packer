@@ -20,8 +20,8 @@ for(int i = 0; i < OS.size(); i++) {
     def index = i
     def osString = OS[index]
 
-    if(getLastJobStatus(osString, "Updates")) {
-        updateJobs["Update OS ${OS.getAt(index)}"] = {
+    updateJobs["Update OS ${OS.getAt(index)}"] = {
+        if(getLastJobStatus(osString, "BuildOS")) {
             build job: 'packer-Updates', parameters: [
                 string(name: 'OSVersion', value: osString)]
         }
