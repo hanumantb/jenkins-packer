@@ -42,7 +42,7 @@ pipeline {
                 '''
             }
         }
-        stage('Update Last Run') {
+        stage('Update Last Run When Failed') {
             when {
                 expression {
                     !(getLastJobStatus(osVersion, "BuildOS"))
