@@ -42,6 +42,19 @@ pipeline {
                 '''
             }
         }
+        stage('Update Last Run') {
+            when {
+                expression {
+                    !(getLastJobStatus(osVersion, "BuildOS"))
+                }
+            }
+            steps {
+                powershell '''
+                    .\\Helper-Functions.ps1
+                    Set-LastBuild -OSVersion $env:OSVersion -Status FAILED -BuildDirectory $env:OutputDirectory -Task Updates
+                '''
+            }
+        }
     }
     post {
         success {
