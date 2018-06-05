@@ -23,7 +23,7 @@ for(int i = 0; i < OS.size(); i++) {
     updateJobs["Update OS ${OS.getAt(index)}"] = {
         build job: 'packer-Updates', parameters: [
         string(name: 'OSVersion', value: osString)],
-        waite: true
+        wait: true, propagate: false
     }
 }
 
@@ -31,51 +31,52 @@ def deployJobsBatch1 = [:]
 deployJobsBatch1["Deploy OS 2008R2 to DEN3"] = {
     build job: 'packer-Deploy', parameters: [
         string(name: 'OSVersion', value: "2008R2"),
-        string(name: 'DestinationVcenter', value: "DEN3")], wait: true
+        string(name: 'DestinationVcenter', value: "DEN3")], wait: true, propagate: false
+
 }
 deployJobsBatch1["Deploy OS 2012R2 to SEA1"] = {
     build job: 'packer-Deploy', parameters: [
         string(name: 'OSVersion', value: "2012R2"),
-        string(name: 'DestinationVcenter', value: "SEA1")], wait: true
+        string(name: 'DestinationVcenter', value: "SEA1")], wait: true, propagate: false
 }
 deployJobsBatch1["Deploy OS 2016 to DEN4"] = {
     build job: 'packer-Deploy', parameters: [
         string(name: 'OSVersion', value: "2016"),
-        string(name: 'DestinationVcenter', value: "DEN4")], wait: true
+        string(name: 'DestinationVcenter', value: "DEN4")], wait: true, propagate: false
 }
 
 def deployJobsBatch2= [:]
 deployJobsBatch2["Deploy OS 2008R2 to SEA1"] = {
     build job: 'packer-Deploy', parameters: [
         string(name: 'OSVersion', value: "2008R2"),
-        string(name: 'DestinationVcenter', value: "SEA1")], wait: true
+        string(name: 'DestinationVcenter', value: "SEA1")], wait: true, propagate: false
 }
 deployJobsBatch2["Deploy OS 2012R2 to DEN4"] = {
     build job: 'packer-Deploy', parameters: [
         string(name: 'OSVersion', value: "2012R2"),
-        string(name: 'DestinationVcenter', value: "DEN4")], wait: true
+        string(name: 'DestinationVcenter', value: "DEN4")], wait: true, propagate: false
 }
 deployJobsBatch2["Deploy OS 2016 to SEA2"] = {
     build job: 'packer-Deploy', parameters: [
         string(name: 'OSVersion', value: "2016"),
-        string(name: 'DestinationVcenter', value: "SEA2")], wait: true
+        string(name: 'DestinationVcenter', value: "SEA2")], wait: true, propagate: false
 }
 
 def deployJobsBatch3= [:]
 deployJobsBatch3["Deploy OS 2008R2 to DEN4"] = {
     build job: 'packer-Deploy', parameters: [
         string(name: 'OSVersion', value: "2008R2"),
-        string(name: 'DestinationVcenter', value: "DEN4")], wait: true
+        string(name: 'DestinationVcenter', value: "DEN4")], wait: true, propagate: false
 }
 deployJobsBatch3["Deploy OS 2012R2 to SEA2"] = {
     build job: 'packer-Deploy', parameters: [
         string(name: 'OSVersion', value: "2012R2"),
-        string(name: 'DestinationVcenter', value: "SEA2")], wait: true
+        string(name: 'DestinationVcenter', value: "SEA2")], wait: true, propagate: false
 }
 deployJobsBatch3["Deploy OS 2016 to DEN2"] = {
     build job: 'packer-Deploy', parameters: [
         string(name: 'OSVersion', value: "2016"),
-        string(name: 'DestinationVcenter', value: "DEN2")], wait: true
+        string(name: 'DestinationVcenter', value: "DEN2")], wait: true, propagate: false
 }
 
 def getLastJobStatus(osVersion, task) {
