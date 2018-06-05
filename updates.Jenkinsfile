@@ -50,7 +50,7 @@ pipeline {
             }
             steps {
                 powershell '''
-                    .\\Helper-Functions.ps1
+                    . .\\Helper-Functions.ps1
                     Set-LastBuild -OSVersion $env:OSVersion -Status FAILED -BuildDirectory $env:OutputDirectory -Task Updates
                 '''
             }
