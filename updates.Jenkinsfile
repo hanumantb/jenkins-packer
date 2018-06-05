@@ -1,5 +1,6 @@
-import hudson.model.Result
-import jenkins.model.*
+import hudson.model.*
+
+def build = Thread.currentThread().executable
 
 def buildDesc = "Packer - Updates \\ ${OSVersion}"
 
