@@ -33,7 +33,7 @@ pipeline {
         stage('BaseOS') {
             when {
                 expression {
-                    getLastJobStatus(osVersion, "Updates")
+                    getLastJobStatus(osVersion, "BuildOS")
                 }
             }
             steps {
