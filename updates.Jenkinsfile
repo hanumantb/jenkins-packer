@@ -32,7 +32,9 @@ pipeline {
         }
         stage('BaseOS') {
             when {
-                getLastJobStatus(osVersion, "Updates")
+                expression {
+                    getLastJobStatus(osVersion, "Updates")
+                }
             }
             steps {
                 powershell '''
