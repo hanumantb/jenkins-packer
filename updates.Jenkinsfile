@@ -1,4 +1,5 @@
 import hudson.model.Result
+import jenkins.model.*
 
 def buildDesc = "Packer - Updates \\ ${OSVersion}"
 
@@ -57,6 +58,8 @@ pipeline {
                     Set-LastBuild -OSVersion $env:OSVersion -Status FAILED -BuildDirectory $env:packer_build_directory -Task Updates
                 '''
                 script {
+                    project = getProject('packer-Updates')
+                    build = project.getBuildByNumber(Run.getNumber())
                     build.@result = hudson.model.Result.ABORTED
                 }
             }
