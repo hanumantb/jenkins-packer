@@ -50,8 +50,9 @@ pipeline {
             }
             steps {
                 powershell '''
+                    Write-Host "Updating LastRun to FAILED."
                     . .\\Helper-Functions.ps1
-                    Set-LastBuild -OSVersion $env:OSVersion -Status FAILED -BuildDirectory $env:OutputDirectory -Task Updates
+                    Set-LastBuild -OSVersion $env:OSVersion -Status FAILED -BuildDirectory $env:packer_build_directory -Task Updates
                 '''
             }
         }
