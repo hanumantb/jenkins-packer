@@ -58,7 +58,9 @@ pipeline {
                     . .\\Helper-Functions.ps1
                     Set-LastBuild -OSVersion $env:OSVersion -Status FAILED -BuildDirectory $env:packer_build_directory -Task Updates
                 '''
-                build.@result = hudson.model.Result.ABORTED
+                script {
+                    build.@result = hudson.model.Result.ABORTED
+                }
             }
         }
     }
