@@ -7,7 +7,6 @@ def getLastJobStatus(osVersion, task) {
     lastRun = readJSON file: "${packer_build_directory}/${osVersion}-${task}-LastRun.json"
     return lastRun.Status == 'SUCCEEDED'
 }
-def project = getProject('packer-Updates')
 
 pipeline {
     agent { label 'packer' }
@@ -59,8 +58,7 @@ pipeline {
                     Set-LastBuild -OSVersion $env:OSVersion -Status FAILED -BuildDirectory $env:packer_build_directory -Task Updates
                 '''
                 script {
-                    build = project.getBuildByNumber(${BUILD_NUMBER})
-                    build.@result = hudson.model.Result.ABORTED
+                    manager.build.@result = hudson.model.Result.ABORTED
                 }
             }
         }
