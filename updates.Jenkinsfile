@@ -59,7 +59,7 @@ pipeline {
                 '''
                 script {
                     project = getProject('packer-Updates')
-                    build = project.getBuildByNumber(Run.getNumber())
+                    build = project.getBuildByNumber(${BUILD_NUMBER})
                     build.@result = hudson.model.Result.ABORTED
                 }
             }
