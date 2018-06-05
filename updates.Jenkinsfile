@@ -1,3 +1,5 @@
+import hudson.model.Result
+
 def buildDesc = "Packer - Updates \\ ${OSVersion}"
 
 def getLastJobStatus(osVersion, task) {
@@ -54,6 +56,11 @@ pipeline {
                     . .\\Helper-Functions.ps1
                     Set-LastBuild -OSVersion $env:OSVersion -Status FAILED -BuildDirectory $env:packer_build_directory -Task Updates
                 '''
+            }
+            steps {
+                script {
+                    build.@result = hudson.model.Result.ABORTED
+                }
             }
         }
     }
