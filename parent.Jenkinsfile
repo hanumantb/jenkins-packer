@@ -23,7 +23,7 @@ for(int i = 0; i < OS.size(); i++) {
     updateJobs["Update OS ${OS.getAt(index)}"] = {
         build job: 'packer-Updates', parameters: [
         string(name: 'OSVersion', value: osString)],
-        waite: true, propagate: false
+        waite: true
     }
 }
 
