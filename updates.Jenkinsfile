@@ -1,7 +1,5 @@
 import hudson.model.*
 
-def build = Thread.currentThread().executable
-
 def buildDesc = "Packer - Updates \\ ${OSVersion}"
 
 def getLastJobStatus(osVersion, task) {
@@ -59,7 +57,7 @@ pipeline {
                     Set-LastBuild -OSVersion $env:OSVersion -Status FAILED -BuildDirectory $env:packer_build_directory -Task Updates
                 '''
                 script {
-                    build.@result = hudson.model.Result.ABORTED
+                    currentBuild.result = "UNSTABLE"
                 }
             }
         }
