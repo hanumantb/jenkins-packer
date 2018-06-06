@@ -58,7 +58,7 @@ pipeline {
                     Set-LastBuild -OSVersion $env:OSVersion -Status FAILED -BuildDirectory $env:packer_build_directory -Task Updates
                 '''
                 script {
-                    currentBuild.result = "UNSTABLE"
+                    currentBuild.result = "ABORTED"
                 }
             }
         }
