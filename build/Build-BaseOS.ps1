@@ -13,23 +13,13 @@ $packer_file = "01-$OSVersion-base.json"
 $env:PACKER_LOG=2
 
 # Set up build
-# & $env:packer_exe_path build -force -var-file=".\variables-global.json" -var "name=$OSVersion" -var "output_dir=$OutputDirectory" $packer_file
+& $env:PACKER_EXE_PATH build -force -var-file=".\variables-global.json" -var "name=$OSVersion" -var "output_dir=$OutputDirectory" $packer_file
 
-# Sleep to test waiting in jenkins
-$random = Get-Random -Minimum 5 -Maximum 15
-Write-Host "Sleeping for $random seconds"
-Start-Sleep -Seconds $random
-
-Write-Host "Base OS was successfull for $OSVersion."
-
-# Set last status
-
-#TODO: Remove this after testing!
-$rando = Get-Random -Minimum 1 -Maximum 3
-if($rando -eq 1) {
-    $Status = "SUCCEEDED"
+if($LastExitCode -eq 0) { # Run was successful
+    Write-Host "Base OS was successfull for $OSVersion."
+    $status = "SUCCEEDED"
 } else {
-    $Status = "FAILED"
+    Write-Host "Base OS for $OSVersion FAILED."
+    $status = "FAILED"
 }
-
-Set-LastBuild -OSVersion $OSVersion -Status $Status -BuildDirectory $OutputDirectory -Task BuildOS
+Set-LastBuild -OSVersion $OSVersion -Status $status -BuildDirectory $OutputDirectory -Task BuildOS

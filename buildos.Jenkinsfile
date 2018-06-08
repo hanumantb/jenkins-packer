@@ -1,15 +1,11 @@
 def buildDesc = "Packer - BaseOS \\ ${OSVersion}"
-// TODO: Try adding choices here and referencing in parameters
-// TODO: Can you call a pipeline from a pipeline?
-
 
 pipeline {
     agent { label 'packer' }
     environment {
         // Packer directories
-        packer_build_directory = "D:/PackerBuilds/"
-        packer_exe_path = "D:/Packer/packer.exe"
-        // Sets permanent cache location for downloaded isos
+        PACKER_BUILD_DIRECTORY = "D:/PackerBuilds/"
+        PACKER_EXE_PATH = "D:/Packer/packer.exe"
         PACKER_CACHE_DIR = "D:/PackerCache/"
     }
     parameters {
@@ -31,7 +27,7 @@ pipeline {
         stage('BaseOS') {
             steps {
                 powershell '''
-                    .\\build\\Build-BaseOS.ps1 -OSVersion $env:OSVersion -OutputDirectory $env:packer_build_directory
+                    .\\build\\Build-BaseOS.ps1 -OSVersion $env:OSVersion -OutputDirectory $env:PACKER_BUILD_DIRECTORY
                 '''
             }
         }
