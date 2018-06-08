@@ -5,6 +5,9 @@ param(
 # .source Helper-Functions
 . ./Helper-Functions.ps1
 
+# Change to the packer directory
+Set-Location packer
+
 Write-Host "Current directory is: $((Get-Location).path)"
 
 # Set up Packer json file name based on OSVersion
