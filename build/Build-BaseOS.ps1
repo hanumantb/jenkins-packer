@@ -6,7 +6,9 @@ param(
 . ./Helper-Functions.ps1
 
 # Change to packer dir
-cd ../packer
+Set-Location ../packer
+
+Write-Host "Current directory is: $((Get-Location).path)"
 
 # Set up Packer json file name based on OSVersion
 $packer_file = "01-$OSVersion-base.json"
