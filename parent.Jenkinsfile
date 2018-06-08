@@ -2,7 +2,6 @@ def buildDesc = "Packer - Parent Pipeline"
 def OS = ["2008R2", "2012R2", "2016"]
 def lastRun;
 def Destinations = ["DEN3", "DEN4", "DEN2", "SEA1", "SEA2"]
-// def builds;  //TODO: Is it necessary to put these up here?
 
 // Set up jobs
 def buildOSJobs = [:]
@@ -27,7 +26,7 @@ for(int i = 0; i < OS.size(); i++) {
     }
 }
 
-def deployJobsBatch1 = [:]
+/* def deployJobsBatch1 = [:]
 deployJobsBatch1["Deploy OS 2008R2 to DEN3"] = {
     build job: 'packer-Deploy', parameters: [
         string(name: 'OSVersion', value: "2008R2"),
@@ -77,7 +76,7 @@ deployJobsBatch3["Deploy OS 2016 to DEN2"] = {
     build job: 'packer-Deploy', parameters: [
         string(name: 'OSVersion', value: "2016"),
         string(name: 'DestinationVcenter', value: "DEN2")], wait: true, propagate: false
-}
+} */
 
 def getLastJobStatus(osVersion, task) {
     lastRun = readJSON file: "${packer_build_directory}/${osVersion}-${task}-LastRun.json"
