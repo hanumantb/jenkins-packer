@@ -26,4 +26,5 @@ if($LastExitCode -eq 0) { # Run was successful
     Write-Host "Base OS for $OSVersion FAILED."
     $status = "FAILED"
 }
+
 Set-LastBuild -OSVersion $OSVersion -Status $status -BuildDirectory $OutputDirectory -Task BuildOS
