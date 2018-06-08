@@ -5,8 +5,8 @@ param(
 # .source Helper-Functions
 . ./Helper-Functions.ps1
 
-# Change to packer dir
-Set-Location ../packer
+# # Change to packer dir
+# Set-Location ../packer
 
 Write-Host "Current directory is: $((Get-Location).path)"
 
