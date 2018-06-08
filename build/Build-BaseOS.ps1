@@ -5,9 +5,6 @@ param(
 # .source Helper-Functions
 . ./Helper-Functions.ps1
 
-# # Change to packer dir
-# Set-Location ../packer
-
 Write-Host "Current directory is: $((Get-Location).path)"
 
 # Set up Packer json file name based on OSVersion
@@ -17,7 +14,7 @@ $packer_file = "01-$OSVersion-base.json"
 $env:PACKER_LOG=2
 
 # Set up build
-& $env:PACKER_EXE_PATH build -force -var-file="variables-global.json" -var "name=$OSVersion" -var "output_dir=$OutputDirectory" $packer_file
+& $env:PACKER_EXE_PATH build -force -var-file="packer/variables-global.json" -var "name=$OSVersion" -var "output_dir=$OutputDirectory" "packer/$packer_file"
 
 if($LastExitCode -eq 0) { # Run was successful
     Write-Host "Base OS was successfull for $OSVersion."
