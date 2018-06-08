@@ -2,20 +2,17 @@ param(
     $OSVersion,
     $OutputDirectory = "D:\PackerBuilds\"
 )
+# .source Helper-Functions
+. ./Helper-Functions.ps1
 
 # Change to packer dir
 cd ../packer
-
-# .source Helper-Functions
-. ./Helper-Functions.ps1
 
 # Set up Packer json file name based on OSVersion
 $packer_file = "01-$OSVersion-base.json"
 
 # Set packer log level
 $env:PACKER_LOG=2
-
-
 
 # Set up build
 & $env:PACKER_EXE_PATH build -force -var-file=".\variables-global.json" -var "name=$OSVersion" -var "output_dir=$OutputDirectory" ".\$packer_file"
