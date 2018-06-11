@@ -5,7 +5,7 @@
     },
     "builders": [{
         "type": "vmware-vmx",
-        "source_path": "{{ user `output_dir` }}output-{{ user `name` }}--base/{{ user `name`}}.vmx",
+        "source_path": "{{ user `output_dir` }}output-{{ user `name` }}-base/{{ user `name`}}.vmx",
         "headless": "{{ user `headless` }}",
         "communicator": "winrm",
         "winrm_username": "vagrant",
