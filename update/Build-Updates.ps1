@@ -6,6 +6,10 @@ param(
 # .source Helper-Functions
 . ./Helper-Functions.ps1
 
+# Change to the packer directory
+Set-Location packer
+Write-Host "Current directory is: $((Get-Location).path)"
+
 # Set up Packer json file name based on OSVersion
 $packer_file = "02-$OSVersion-updates.json"
 
@@ -13,22 +17,14 @@ $packer_file = "02-$OSVersion-updates.json"
 $env:PACKER_LOG=2
 
 # Set up build
-# TODO: Acutally implement this. & $env:packer_exe_path build -force -var-file=".\variables-global.json" -var "name=$OSVersion" -var "output_dir=$OutputDirectory" $packer_file
+& $env:packer_exe_path build -force -var-file="variables-global.json" -var "name=$OSVersion" -var "output_dir=$OutputDirectory" $packer_file
 
-# Sleep to test waiting in jenkins
-$random = Get-Random -Minimum 5 -Maximum 15
-Write-Host "Sleeping for $random seconds"
-Start-Sleep -Seconds $random
-
-Write-Host "Updates were successfull for $OSVersion to $OutputDirectory"
-
-# Set last status
-#TODO: Remove this after testing!
-$rando = Get-Random -Minimum 1 -Maximum 3
-if($rando -eq 1) {
-    $Status = "SUCCEEDED"
+if($LastExitCode -eq 0) { # Run was successful
+    Write-Host "Updates were successfull for $OSVersion."
+    $status = "SUCCEEDED"
 } else {
-    $Status = "FAILED"
+    Write-Host "Updates for $OSVersion FAILED."
+    $status = "FAILED"
 }
 
 Set-LastBuild -OSVersion $OSVersion -Status $Status -BuildDirectory $OutputDirectory -Task Updates
