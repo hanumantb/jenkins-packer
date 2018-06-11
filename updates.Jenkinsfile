@@ -20,7 +20,7 @@ pipeline {
         choice(
             // OS Version to build.
             name: 'OSVersion',
-            choices:"2008R2\n2012R2\n20116",
+            choices:"2008R2\n2012R2\n2016",
             description: "Operating System Version"
         )
     }
