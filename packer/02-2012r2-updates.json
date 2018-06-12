@@ -20,7 +20,7 @@
             "scripts/Start-Shutdown.bat"
         ]
     }],
-    "provisioners": [{
+    "provisioners": [
         {
             "type": "powershell",
             "scripts": [
