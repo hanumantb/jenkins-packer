@@ -21,13 +21,13 @@
         ]
     }],
     "provisioners": [{
-            "type": "windows-update",
-            "update_limit": "50"
-        },
         {
             "type": "powershell",
             "scripts": [
-                "scripts/Remove-UpdateCache.ps1"
+                "scripts/Remove-UpdateCache.ps1",
+                "scripts/Remove-PackerScheduledTasks.ps1",
+                "scripts/Invoke-Defrag.ps1",
+                "scripts/Reset-EmptySpace.ps1"
             ]
         },
         {
