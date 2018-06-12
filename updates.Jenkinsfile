@@ -32,7 +32,7 @@ pipeline {
                 }
             }
         }
-        stage('BaseOS') {
+        stage('Updates') {
             when {
                 expression {
                     getLastJobStatus(osVersion, "BuildOS")

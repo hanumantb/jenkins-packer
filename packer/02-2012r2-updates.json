@@ -25,6 +25,12 @@
             "update_limit": "50"
         },
         {
+            "type": "powershell",
+            "scripts": [
+                "scripts/Remove-UpdateCache.ps1"
+            ]
+        },
+        {
             "type": "windows-restart"
         }
     ]
