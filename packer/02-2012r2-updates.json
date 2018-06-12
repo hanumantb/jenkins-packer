@@ -22,6 +22,10 @@
     }],
     "provisioners": [
         {
+            "type": "windows-update",
+            "update_limit": "50"
+        },
+        {
             "type": "powershell",
             "scripts": [
                 "scripts/Remove-UpdateCache.ps1",
