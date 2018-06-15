@@ -18,11 +18,10 @@ $packer_file = "02-$OSVersion-updates.json"
 $env:PACKER_LOG=2
 
 # Set up build
-$BuildCommand = "packer build -force"
 if($Debug) {
-    $BuildCommand += " --debug"
+    & packer build -debug -force -var-file="variables-global.json" -var "name=$OSVersion" -var "output_dir=$OutputDirectory" $packer_file
 }
-& "$BuildCommand -var-file="variables-global.json" -var "name=$OSVersion" -var "output_dir=$OutputDirectory" $packer_file"
+& packer build -force -var-file="variables-global.json" -var "name=$OSVersion" -var "output_dir=$OutputDirectory" $packer_file
 
 if($LastExitCode -eq 0) { # Run was successful
     Write-Host "Updates were successfull for $OSVersion."
