@@ -16,8 +16,10 @@ $packer_file = "02-$OSVersion-updates.json"
 # Set packer log level
 $env:PACKER_LOG=2
 
+$packer_exe = $env:packer_exe_path
+
 # Set up build
-& $env:packer_exe_path build -force -var-file="variables-global.json" -var "name=$OSVersion" -var "output_dir=$OutputDirectory" $packer_file
+& packer build -force -var-file="variables-global.json" -var "name=$OSVersion" -var "output_dir=$OutputDirectory" $packer_file
 
 if($LastExitCode -eq 0) { # Run was successful
     Write-Host "Updates were successfull for $OSVersion."
