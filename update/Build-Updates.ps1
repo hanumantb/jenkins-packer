@@ -1,6 +1,7 @@
 param(
     $OSVersion,
-    $OutputDirectory = "D:\PackerBuilds\"
+    $OutputDirectory = "D:\PackerBuilds\",
+    [Switch]$PackerDebug
 )
 
 # .source Helper-Functions
@@ -16,10 +17,12 @@ $packer_file = "02-$OSVersion-updates.json"
 # Set packer log level
 $env:PACKER_LOG=2
 
-$packer_exe = $env:packer_exe_path
-
 # Set up build
-& packer build -force -var-file="variables-global.json" -var "name=$OSVersion" -var "output_dir=$OutputDirectory" $packer_file
+$BuildCommand = "packer build -force"
+if($Debug) {
+    $BuildCommand += " --debug"
+}
+& "$BuildCommand -var-file="variables-global.json" -var "name=$OSVersion" -var "output_dir=$OutputDirectory" $packer_file"
 
 if($LastExitCode -eq 0) { # Run was successful
     Write-Host "Updates were successfull for $OSVersion."
