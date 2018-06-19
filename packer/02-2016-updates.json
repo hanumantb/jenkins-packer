@@ -22,6 +22,9 @@
     }],
     "provisioners": [
         {
+            "type": "windows-restart"
+        },
+        {
             "type": "windows-update",
             "update_limit": "50",
             "filters": [
