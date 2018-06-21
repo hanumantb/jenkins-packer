@@ -22,12 +22,13 @@
     }],
     "provisioners": [
         {
+            "type": "windows-restart"
+        },
+        {
             "type": "windows-update",
             "update_limit": "50",
             "filters": [
-                "exclude:$_.Title -like '*Preview*'",
-                "include:$_.Title -like '*Cumulative Update for Windows*'",
-                "include:$_.AutoSelectOnWebSites"
+                "include:$true"
               ]
         },
         {
