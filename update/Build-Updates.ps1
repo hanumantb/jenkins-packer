@@ -18,7 +18,7 @@ $packer_file = "02-$OSVersion-updates.json"
 $env:PACKER_LOG=2
 
 # Set up build
-if($Debug) {
+if($PackerDebug) {
     & packer build -debug -force -var-file="variables-global.json" -var "name=$OSVersion" -var "output_dir=$OutputDirectory" $packer_file
 }
 & packer build -force -var-file="variables-global.json" -var "name=$OSVersion" -var "output_dir=$OutputDirectory" $packer_file
