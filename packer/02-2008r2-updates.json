@@ -28,10 +28,9 @@
             "type": "windows-update",
             "update_limit": "50",
             "filters": [
+                "exclude:$_.Title -like '*Preview*'",
                 "include:$true"
-              ],
-            "username": "vagrant",
-            "password": "vagrant"
+              ]
         },
         {
             "type": "powershell",
