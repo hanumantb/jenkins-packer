@@ -24,7 +24,7 @@
         {
             "type": "powershell",
             "inline": [
-                "Set-TimeZone -Name 'Mountain Standard Time'"
+                "tzutil /s 'Mountain Standard Time'"
             ]
         },
         {
