@@ -22,6 +22,12 @@
     }],
     "provisioners": [
         {
+            "type": "powershell",
+            "inline": [
+                "Set-TimeZone -Name 'Mountain Standard Time'"
+            ]
+        },
+        {
             "type": "windows-restart"
         },
         {
@@ -29,8 +35,12 @@
             "update_limit": "50",
             "filters": [
                 "exclude:$_.Title -like '*Preview*'",
-                "include:$true"
+                "include:$_.Title -like '*Cumulative Update for Windows*'",
+                "include:$_.AutoSelectOnWebSites"
               ]
+        },
+        {
+            "type": "windows-restart"
         },
         {
             "type": "powershell",
@@ -39,9 +49,7 @@
                 "scripts/Remove-PackerScheduledTasks.ps1",
                 "scripts/Invoke-Defrag.ps1",
                 "scripts/Reset-EmptySpace.ps1"
-            ],
-            "elevated_user": "vagrant",
-            "elevated_password": "vagrant"
+            ]
         },
         {
             "type": "windows-restart"
