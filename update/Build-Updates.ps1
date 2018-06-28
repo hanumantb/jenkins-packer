@@ -15,7 +15,7 @@ Write-Host "Current directory is: $((Get-Location).path)"
 $packer_file = "02-$OSVersion-updates.json"
 
 # Set packer log level
-$env:PACKER_LOG=2
+$env:PACKER_LOG=1
 
 # Set up build
 if($PackerDebug) {

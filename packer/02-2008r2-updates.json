@@ -22,12 +22,6 @@
     }],
     "provisioners": [
         {
-            "type": "powershell",
-            "inline": [
-                "tzutil /s 'Mountain Standard Time'"
-            ]
-        },
-        {
             "type": "windows-restart"
         },
         {
