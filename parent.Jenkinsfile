@@ -14,7 +14,7 @@ for(int i = 0; i < OS.size(); i++) {
     }
 }
 
-/*def updateJobs = [:]
+def updateJobs = [:]
 for(int i = 0; i < OS.size(); i++) {
     def index = i
     def osString = OS[index]
@@ -26,7 +26,7 @@ for(int i = 0; i < OS.size(); i++) {
     }
 }
 
-def deployJobsBatch1 = [:]
+/* def deployJobsBatch1 = [:]
 deployJobsBatch1["Deploy OS 2008R2 to DEN3"] = {
     build job: 'packer-Deploy', parameters: [
         string(name: 'OSVersion', value: "2008R2"),
@@ -84,7 +84,7 @@ def getLastJobStatus(osVersion, task) {
 }
 
 pipeline {
-    agent { label 'packer-node' }
+    agent { label 'packer' }
     environment {
         // Packer directories
         packer_build_directory = "D:/PackerBuilds/"
