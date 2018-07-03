@@ -1,3 +1,18 @@
+def OS = ["2008R2", "2012R2", "2016"]
+def lastRun;
+def Destinations = ["DEN3", "DEN4", "DEN2", "SEA1", "SEA2"]
+
+// Set up jobs
+def buildOSJobs = [:]
+for(int i = 0; i < OS.size(); i++) {
+    def index = i
+    def osString = OS[index]
+    buildOSJobs["Build OS ${OS.getAt(index)}"] = {
+        build job: 'packer-BaseOS', parameters: [
+        string(name: 'OSVersion', value: osString)]
+    }
+}
+
 def buildDesc = "Packer - BaseOS \\ ${OSVersion}"
 
 pipeline {
